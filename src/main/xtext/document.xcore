@@ -1,0 +1,13 @@
+@GenModel(
+    modelDirectory="./build/xcore",
+    complianceLevel="8.0"
+)
+
+package org.palador.xcoreexample.document
+
+import org.palador.xcoreexample.material
+
+class PipemanDocument {
+    String title
+    refers PipeType defaultPipeType
+}

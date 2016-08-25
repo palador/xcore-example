@@ -1,0 +1,10 @@
+@GenModel(
+    modelDirectory="./build/xcore",
+    complianceLevel="8.0"
+)
+
+package org.palador.xcoreexample.material
+
+class PipeType {
+    String name
+}

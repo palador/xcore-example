@@ -1,0 +1,87 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'https://mini2dx.org/maven/content/repositories/thirdparty' }
+        maven { url 'https://mini2dx.org/maven/content/repositories/releases' }
+    }
+
+    ext.xtext_plugin_version = '1.0.10'
+
+    dependencies {
+        classpath "org.xtext:xtext-gradle-plugin:$xtext_plugin_version"
+        classpath 'org.mini2Dx:parcl:1.0.7'
+        classpath 'de.undercouch:gradle-download-task:3.1.1'
+    }
+}
+
+
+group = 'org.palador.xcoreexample'
+version = '1.0-SNAPSHOT'
+
+ext.xtext_version = '2.10.0'
+ext.emf_version = '2.11.0-v20150805-0538'
+ext.ecore_version = '2.11.1-v20150805-0538'
+ext.emf_codegen_version = '2.11.0-v20150806-0404'
+
+apply plugin: 'org.xtext.builder'
+apply plugin: 'org.xtext.xtend'
+apply plugin: 'java'
+apply plugin: 'base'
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        url 'http://maven-eclipse.github.io/maven'
+    }
+}
+
+xtext {
+    version = "$xtext_version"
+
+    sourceSets {
+        main {
+            srcDir 'src/main/xtext'
+        }
+    }
+
+    languages {
+        ecore {
+            setup = 'org.eclipse.xtext.ecore.EcoreSupport'
+        }
+        codegen {
+            setup = 'org.eclipse.emf.codegen.ecore.xtext.GenModelSupport'
+        }
+        xcore {
+            setup = 'org.eclipse.emf.ecore.xcore.XcoreStandaloneSetup'
+            generator.outlet.producesJava = true
+            generator.javaSourceLevel = '1.8'
+        }
+    }
+}
+
+sourceSets {
+    main {
+        output.dir("$buildDir/xcore/main", buildBy: "generateXtext")
+    }
+}
+
+dependencies {
+    compile "org.eclipse.emf:org.eclipse.emf.common:$emf_version"
+    compile "org.eclipse.emf:org.eclipse.emf.ecore:$ecore_version"
+    compile 'org.eclipse.emf:org.eclipse.emf.ecore.xcore.lib:1.1.100'
+    compile 'org.eclipse.xtext:org.eclipse.xtext.xbase.lib:2.9.1'
+
+    xtextLanguages 'org.eclipse.text:org.eclipse.text:3.5.101'
+    xtextLanguages 'org.eclipse.core:org.eclipse.core.resources:3.7.100'
+    xtextLanguages 'org.eclipse.xtext:org.eclipse.xtext.ecore:2.9.1'
+    xtextLanguages 'org.eclipse.emf:org.eclipse.emf.codegen.ecore.xtext:1.2.0'
+    xtextLanguages "org.eclipse.emf:org.eclipse.emf.common:$emf_version"
+    xtextLanguages "org.eclipse.emf:org.eclipse.emf.ecore:$emf_version"
+    xtextLanguages "org.eclipse.emf:org.eclipse.emf.ecore.xmi:$emf_version"
+    xtextLanguages 'org.eclipse.emf:org.eclipse.emf.ecore.xcore:1.3.1'
+    xtextLanguages 'org.eclipse.emf:org.eclipse.emf.ecore.xcore.lib:1.1.100'
+    xtextLanguages "org.eclipse.emf:org.eclipse.emf.codegen:$emf_codegen_version"
+    xtextLanguages "org.eclipse.emf:org.eclipse.emf.codegen.ecore:$emf_codegen_version"
+}
